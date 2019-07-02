@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  </head>
+
+  <script type="text/javascript">
+  function fetch_item_data(){
+    $.ajax({
+    type: 'post',
+    url: 'fetch.php',
+
+    success: function (response) {
+    // We get the element having id of display_info and put the response inside it
+    $( '#det' ).html(response);
+    }
+    });
+    
+  }
+  setInterval(fetch_item_data, 1000)
+  </script>
+
+  </head>
+  <body>
+      
+    <div class="container">
+      <h2 style="text-align:center;">Permission</h2>
+      <br><br>
+
+      <div class="search-box">
+        <input type="text" id="search-txt" onkeyup="myFunction()" name="" placeholder="search here...">
+        <a class="search-btn" href="#">
+          <i class="fas fa-search"></i>
+        </a>
+      </div>
+      <br><br>
+                
+      <table class="table" id="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Purpose</th>
+            <th>Date From</th>
+            <th>Date from</th>
+            <th>Gadget</th>
+          </tr>
+        </thead>
+        <tbody id="det">
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Search engine -->
+    <script>
+      function myFunction() {
+      var input, filter, table, tr, th, i;
+      input = document.getElementById("search-txt");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("table");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+          th = tr[i].getElementsByTagName("th")[0];
+          if (th) {
+          if (th.innerHTML.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+          } else {
+              tr[i].style.display = "none";
+          }
+          }       
+      }
+      }
+    </script>
+    
+  </body>
+</html>
