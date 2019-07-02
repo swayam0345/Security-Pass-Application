@@ -1,63 +1,182 @@
+<?php
+
+$id=$_COOKIE['id'];
+$link = mysqli_connect("localhost", "root", "", "drdo");
+
+$query="SELECT * FROM sign where id='$id'";
+$result=mysqli_query($link,$query);
+$row=mysqli_fetch_array($result);
+if(isset($row)){
+    $id=$row['id'];
+    $name = $row['name1'];
+    $password = $row['pass'];
+    $town = $row['town'];
+    $phone = $row['phone'];
+    $DOB = $row['dob'];
+    $email = $row['email'];
+    $job = $row['job'];
+    $rank = $row['rank'];
+    $dept = $row['dept'];
+    $unique=uniqid($dept);
+    $doj = $row['doj'];
+}
+
+
+$number = count($_POST);
+if($number > 1)
+{
+	for($i=0; $i<$number; $i++)
+	{
+        if(array_key_exists(0, $_POST["name"]) == false)
+        {
+            if(trim($_POST["name"][$i] != ''))
+            {
+                $sql = "INSERT INTO details(name1,cmpny,purpose,datefrom,dateto,special) 
+                VALUES('".mysqli_real_escape_string($link, $_POST["name"][$i])."',
+                '".mysqli_real_escape_string($link, $_POST["company"][$i])."',
+                '".mysqli_real_escape_string($link, $_POST["purpose"][$i])."',
+                '".mysqli_real_escape_string($link, $_POST["dtfr"][$i])."',
+                '".mysqli_real_escape_string($link, $_POST["dtto"][$i])."',
+                '".mysqli_real_escape_string($link, $_POST["special"][$i])."')";
+                mysqli_query($link, $sql);
+            } 
+        }
+	}
+}
+else
+{
+	echo "Please Enter details";
+}
+
+$now = new DateTime();
+?>
+
 <html>
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  </head>
-
-  <script type="text/javascript">
-  function fetch_item_data(){
-    $.ajax({
-    type: 'post',
-    url: 'fetch.php',
-
-    success: function (response) {
-    // We get the element having id of display_info and put the response inside it
-    $( '#det' ).html(response);
-    }
-    });
-    
-  }
-  setInterval(fetch_item_data, 1000)
-  </script>
-
-  </head>
-  <body>
-      
-    <div class="container">
-      <h2 style="text-align:center;">Permission</h2>
-      <br><br>
-
-      <div class="search-box">
-        <input type="text" id="search-txt" onkeyup="myFunction()" name="" placeholder="search here...">
-        <a class="search-btn" href="#">
-          <i class="fas fa-search"></i>
-        </a>
-      </div>
-      <br><br>
-                
-      <table class="table" id="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Company</th>
-            <th>Purpose</th>
-            <th>Date From</th>
-            <th>Date from</th>
-            <th>Gadget</th>
-          </tr>
-        </thead>
-        <tbody id="det">
-
-        </tbody>
-      </table>
-    </div>
-    
-  </body>
+	<head>
+		<title>Employee list</title>
+		<link rel="stylesheet" type="text/css" href="styleemp.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+	</head>
+	<body>
+	<section>
+            <div class="container-fluid">
+                <div class="container">
+                    <div class="formbox">
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h1>Employee Database</h1>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="inputbox">
+                                            <div style="font-size:20px;color:#0091C9">Name</div>
+                                            <input type="text" name="name" value=<?php echo $name;?> class="input">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="inputbox">
+                                            <div style="font-size:20px;color:#0091C9">Department</div>
+                                                <input type="text" name="name" class="input" value=<?php echo $dept;?>>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="inputbox">
+                                            <div style="font-size:20px;color:#0091C9">Employee ID</div>
+                                                <input type="text" name="name" class="input" value=<?php echo $id;?>>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="inputbox">
+                                            <div style="font-size:20px;color:#0091C9">Designation</div>
+                                                <input type="text" name="name" class="input" value=<?php $a=$job.":-";$a .=$rank; echo $a;?>>
+                                        </div>
+                                    </div>
+								</div>
+								<div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="inputbox">
+                                            <div style="font-size:20px;color:#0091C9">Application ID</div>
+                                            <input type="text" name="name" class="input" value=<?php echo $unique;?>>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="inputbox">
+                                            <div style="font-size:20px;color:#0091C9">Date</div>
+												<input type="text" name="name" class="input" value=<?php echo $now->format('Y-m-d H:i:s');?> >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+		<br>
+		<form name="add_name" id="add_name" method="POST" action="index.php">
+			<div class="table-gr">
+				<table class="table table-bordered" id="dynamic_field">
+				<h2>Visitors Details</h2>
+					<tr>
+						<td><input type="text" name="name[]" placeholder="Visitors Name"></td>
+						<td><input type="text" name="company[]" placeholder="company"></td>
+						<td><input type="text" name="purpose[]" placeholder="purpose"></td>
+						<td><input type="text" name="dtfr[]" onfocus="(this.type='date')" onfocusout="(this.type='text')" placeholder="date from"></td>
+						<td><input type="text" name="dtto[]" onfocus="(this.type='date')" onfocusout="(this.type='text')" placeholder="date to"></td>
+						<td><input type="text" name="special[]" placeholder="Moblie,Laptops,..."></td>                        
+						<td><button type="button" name="add" id="add" class="btn btn-success">Add</button></td>
+					</tr>
+				</table>
+			</div>
+			<br><br>
+			<input type="submit" name="submit" id="submit" class="btn btn-info" value="Submit" />
+		</form>
+	</body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        $(".input").focus(function(){
+            $(this).parent().addClass("focus");
+            }).blur(function(){
+                if($(this).val() === ''){
+                    $(this).parent().removeClass("focus");
+                }
+            })
+    </script>
+<script>
+$(document).ready(function(){
+	var i=1;
+    var c=1;
+	$('#add').click(function(){
+		i++;
+		$('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="name[]" placeholder="Visitors Name" ></td><td><input type="text" name="company[]" placeholder="company" ></td><td><input type="text" name="purpose[]" placeholder="purpose" ></td><td><input type="date" name="dtfr[]" placeholder="date from" ></td><td><input type="date" name="dtto[]" placeholder="date to" ><input type="hidden" id="custId" name="i" ></td><td><input type="text" name="special[]" placeholder="Moblie,Laptops,..." ></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>')
+        c++;
+	});
+	
+	$(document).on('click', '.btn_remove', function(){
+		var button_id = $(this).attr("id"); 
+		$('#row'+button_id+'').remove();
+	});
+	
+	$('#submit').click(function(){		
+		$.ajax({
+			url:"index.php",
+			method:"POST",
+			data:$('#add_name').serialize(),
+			success:function(data)
+			{
+				alert(data);
+				$('#add_name')[0].reset();
+			}
+		});
+	});
+
+});
+</script>
